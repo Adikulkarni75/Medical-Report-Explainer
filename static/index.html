@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MedInsight — Medical Report Explainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --teal:       #0a7c6e;
+  --teal-light: #e6f4f2;
+  --teal-mid:   #1aab98;
+  --teal-dark:  #065048;
+  --cream:      #f8f5f0;
+  --cream-dark: #ede9e2;
+  --ink:        #1a1a1a;
+  --ink-muted:  #555;
+  --ink-faint:  #999;
+  --white:      #ffffff;
+  --red:        #c0392b;
+  --red-light:  #fdf0ef;
+  --amber:      #b7651a;
+  --amber-light:#fdf4e7;
+  --green:      #1a7a4a;
+  --green-light:#eaf5ef;
+  --border:     #e0dbd4;
+  --radius:     12px;
+  --radius-lg:  20px;
+  --shadow:     0 2px 16px rgba(10,124,110,0.08);
+  --shadow-lg:  0 8px 40px rgba(10,124,110,0.14);
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  line-height:1.6;
+}
+
+/* ── NAV ── */
+nav{
+  background:var(--white);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:64px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.nav-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.nav-logo-icon{
+  width:36px;height:36px;
+  background:var(--teal);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+}
+.nav-logo-icon svg{width:20px;height:20px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nav-brand{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--teal-dark);letter-spacing:-0.01em}
+.nav-brand span{color:var(--teal-mid)}
+.nav-tagline{font-size:0.78rem;color:var(--ink-faint);font-weight:400}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal) 60%,#0d9e8c 100%);
+  padding:5rem 2rem 4rem;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.9);
+  font-size:0.78rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+  padding:6px 14px;border-radius:100px;
+  margin-bottom:1.5rem;
+}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:#5ef5e0;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:clamp(2.2rem,5vw,3.6rem);
+  color:#fff;
+  line-height:1.15;
+  letter-spacing:-0.02em;
+  margin-bottom:1rem;
+  position:relative;
+}
+.hero h1 em{font-style:italic;color:#5ef5e0}
+.hero p{
+  color:rgba(255,255,255,0.75);
+  font-size:1.05rem;font-weight:300;
+  max-width:520px;margin:0 auto 2.5rem;
+  position:relative;
+}
+.hero-stats{
+  display:flex;justify-content:center;gap:2.5rem;
+  position:relative;
+}
+.hero-stat{color:rgba(255,255,255,0.85);text-align:center}
+.hero-stat strong{display:block;font-size:1.6rem;font-weight:600;color:#fff;font-family:'DM Serif Display',serif}
+.hero-stat span{font-size:0.78rem;opacity:0.7;text-transform:uppercase;letter-spacing:0.06em}
+
+/* ── MAIN LAYOUT ── */
+.main{max-width:960px;margin:0 auto;padding:3rem 1.5rem}
+
+/* ── UPLOAD CARD ── */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:2rem;
+  box-shadow:var(--shadow);
+  margin-bottom:2rem;
+}
+.card-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.4rem;color:var(--teal-dark);
+  margin-bottom:0.4rem;letter-spacing:-0.01em;
+}
+.card-sub{font-size:0.88rem;color:var(--ink-muted);margin-bottom:1.5rem}
+
+.upload-zone{
+  border:2px dashed var(--teal-mid);
+  border-radius:var(--radius);
+  padding:3rem 2rem;
+  text-align:center;
+  background:var(--teal-light);
+  cursor:pointer;
+  transition:all 0.2s;
+  position:relative;
+}
+.upload-zone:hover,.upload-zone.drag{
+  border-color:var(--teal);
+  background:#d8efec;
+  transform:translateY(-1px);
+}
+.upload-icon{
+  width:56px;height:56px;
+  background:var(--teal);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 1rem;
+}
+.upload-icon svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.upload-zone h3{font-size:1rem;font-weight:600;color:var(--teal-dark);margin-bottom:0.3rem}
+.upload-zone p{font-size:0.84rem;color:var(--ink-muted)}
+.upload-zone p span{color:var(--teal);font-weight:500;text-decoration:underline;cursor:pointer}
+#file-input{display:none}
+.file-selected{
+  display:none;
+  align-items:center;gap:12px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:12px 16px;
+  margin-top:1rem;
+}
+.file-selected.show{display:flex}
+.file-icon{width:36px;height:36px;background:var(--red-light);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.file-icon svg{width:18px;height:18px;fill:#c0392b}
+.file-name{font-size:0.88rem;font-weight:500;flex:1;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-size:0.78rem;color:var(--ink-faint)}
+.remove-file{background:none;border:none;cursor:pointer;color:var(--ink-faint);padding:4px;border-radius:6px;transition:color 0.15s}
+.remove-file:hover{color:var(--red)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:600;
+  padding:12px 28px;border-radius:var(--radius);
+  border:none;cursor:pointer;transition:all 0.2s;text-decoration:none;
+}
+.btn-primary{
+  background:var(--teal);color:#fff;width:100%;margin-top:1.2rem;
+  box-shadow:0 4px 14px rgba(10,124,110,0.3);
+}
+.btn-primary:hover{background:var(--teal-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(10,124,110,0.4)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{background:#b0ccc9;box-shadow:none;cursor:not-allowed;transform:none}
+.btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── LOADER ── */
+.loader{display:none;text-align:center;padding:2rem}
+.loader.show{display:block}
+.spinner{
+  width:44px;height:44px;
+  border:3px solid var(--teal-light);
+  border-top-color:var(--teal);
+  border-radius:50%;
+  animation:spin 0.8s linear infinite;
+  margin:0 auto 1rem;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader p{color:var(--ink-muted);font-size:0.9rem}
+.loader .steps{display:flex;flex-direction:column;gap:6px;margin-top:1rem;max-width:280px;margin-left:auto;margin-right:auto}
+.loader .step-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:0.82rem;color:var(--ink-faint);
+  padding:6px 12px;border-radius:8px;
+  transition:all 0.3s;
+}
+.loader .step-item.active{background:var(--teal-light);color:var(--teal-dark);font-weight:500}
+.loader .step-item.done{color:var(--green)}
+.step-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* ── RESULTS ── */
+#results{display:none}
+#results.show{display:block}
+
+.patient-banner{
+  background:linear-gradient(135deg,var(--teal-dark),var(--teal));
+  border-radius:var(--radius-lg);
+  padding:1.8rem 2rem;
+  display:flex;align-items:center;gap:1.5rem;
+  margin-bottom:1.5rem;
+  color:#fff;
+}
+.patient-avatar{
+  width:60px;height:60px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.3);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;
+  font-size:1.4rem;color:#fff;flex-shrink:0;
+}
+.patient-info h2{font-family:'DM Serif Display',serif;font-size:1.4rem;margin-bottom:2px}
+.patient-meta{display:flex;gap:1rem;font-size:0.82rem;opacity:0.8;margin-top:4px}
+.patient-meta span{display:flex;align-items:center;gap:4px}
+.report-id-badge{
+  margin-left:auto;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:8px;padding:8px 14px;
+  text-align:right;flex-shrink:0;
+}
+.report-id-badge .label{font-size:0.72rem;opacity:0.7;text-transform:uppercase;letter-spacing:0.06em}
+.report-id-badge .value{font-size:0.9rem;font-weight:600;font-family:monospace;margin-top:2px}
+
+/* ── FLAGS SUMMARY ── */
+.flags-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+.flag-chip{
+  border-radius:var(--radius);padding:1rem 1.2rem;
+  display:flex;align-items:center;gap:12px;
+}
+.flag-chip.critical,.flag-chip.high{background:var(--red-light);border:1px solid #f5c0bc}
+.flag-chip.low{background:var(--amber-light);border:1px solid #f5ddb0}
+.flag-chip.normal{background:var(--green-light);border:1px solid #b0dfc2}
+.flag-chip.borderline{background:#fef9e7;border:1px solid #f5e0a0}
+.flag-num{font-family:'DM Serif Display',serif;font-size:2rem;line-height:1}
+.flag-chip.critical .flag-num,.flag-chip.high .flag-num{color:var(--red)}
+.flag-chip.low .flag-num{color:var(--amber)}
+.flag-chip.normal .flag-num{color:var(--green)}
+.flag-chip.borderline .flag-num{color:#8a6d00}
+.flag-label{font-size:0.82rem;font-weight:500;color:var(--ink-muted)}
+
+/* ── TESTS TABLE ── */
+.section-title{
+  font-family:'DM Serif Display',serif;
+  font-size:1.2rem;color:var(--teal-dark);
+  margin-bottom:1rem;display:flex;align-items:center;gap:8px;
+}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.test-grid{display:flex;flex-direction:column;gap:8px}
+
+.test-row{
+  display:grid;
+  grid-template-columns:1fr auto auto auto;
+  align-items:center;gap:1rem;
+  padding:14px 16px;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  transition:all 0.15s;
+  cursor:default;
+}
+.test-row:hover{border-color:var(--teal-mid);box-shadow:0 2px 8px rgba(10,124,110,0.08);transform:translateX(2px)}
+.test-row.status-high,.test-row.status-critical{border-left:3px solid var(--red)}
+.test-row.status-low,.test-row.status-borderline{border-left:3px solid var(--amber)}
+.test-row.status-normal{border-left:3px solid var(--green)}
+
+.test-name{font-weight:500;font-size:0.92rem;color:var(--ink)}
+.test-ref{font-size:0.78rem;color:var(--ink-faint);margin-top:2px}
+.test-value{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--ink);text-align:right}
+.test-unit{font-size:0.75rem;color:var(--ink-faint);text-align:right;margin-top:2px}
+
+.status-badge{
+  padding:4px 10px;border-radius:100px;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.04em;
+  white-space:nowrap;
+}
+.badge-normal{background:var(--green-light);color:var(--green)}
+.badge-low{background:var(--amber-light);color:var(--amber)}
+.badge-high,.badge-critical{background:var(--red-light);color:var(--red)}
+.badge-borderline{background:#fef9e7;color:#8a6d00}
+
+.confidence-bar{width:48px;height:4px;background:var(--cream-dark);border-radius:2px;margin-top:4px}
+.confidence-fill{height:100%;border-radius:2px;background:var(--teal-mid)}
+
+/* ── Q&A ── */
+.qa-section{margin-top:2rem}
+
+.qa-input-row{display:flex;gap:10px;margin-bottom:1.5rem}
+.qa-input{
+  flex:1;
+  font-family:'DM Sans',sans-serif;font-size:0.92rem;
+  padding:12px 16px;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  background:var(--white);
+  color:var(--ink);
+  outline:none;
+  transition:border-color 0.2s;
+}
+.qa-input:focus{border-color:var(--teal-mid)}
+.qa-input::placeholder{color:var(--ink-faint)}
+.btn-ask{
+  background:var(--teal);color:#fff;
+  padding:12px 20px;border-radius:var(--radius);
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-weight:600;font-size:0.9rem;
+  display:flex;align-items:center;gap:6px;
+  transition:all 0.2s;white-space:nowrap;
+  box-shadow:0 2px 8px rgba(10,124,110,0.25);
+}
+.btn-ask:hover{background:var(--teal-dark);transform:translateY(-1px)}
+.btn-ask:disabled{background:#b0ccc9;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ask svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.suggested-questions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1.5rem}
+.sq-btn{
+  font-family:'DM Sans',sans-serif;font-size:0.8rem;
+  background:var(--white);border:1px solid var(--border);
+  color:var(--teal-dark);padding:6px 12px;border-radius:100px;
+  cursor:pointer;transition:all 0.15s;font-weight:400;
+}
+.sq-btn:hover{background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal)}
+
+.qa-messages{display:flex;flex-direction:column;gap:12px}
+
+.msg{
+  border-radius:var(--radius);padding:14px 16px;
+  animation:fadeUp 0.3s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.msg-user{
+  background:var(--teal);color:#fff;
+  align-self:flex-end;max-width:80%;
+  border-bottom-right-radius:4px;
+}
+.msg-user .msg-label{font-size:0.72rem;opacity:0.7;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.05em}
+.msg-user .msg-text{font-size:0.9rem;line-height:1.5}
+
+.msg-ai{
+  background:var(--white);border:1px solid var(--border);
+  max-width:92%;border-bottom-left-radius:4px;
+}
+.msg-ai-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ai-avatar{
+  width:28px;height:28px;background:var(--teal-light);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+}
+.ai-avatar svg{width:14px;height:14px;stroke:var(--teal);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ai-name{font-size:0.78rem;font-weight:600;color:var(--teal-dark)}
+.source-tag{
+  margin-left:auto;font-size:0.7rem;
+  background:var(--teal-light);color:var(--teal);
+  padding:2px 8px;border-radius:100px;font-weight:500;
+}
+.msg-ai .msg-text{font-size:0.88rem;color:var(--ink);line-height:1.65}
+
+.msg-thinking{
+  display:flex;align-items:center;gap:10px;
+  background:var(--white);border:1px solid var(--border);
+  border-radius:var(--radius);padding:14px 16px;
+  color:var(--ink-muted);font-size:0.88rem;
+}
+.dots{display:flex;gap:4px}
+.dots span{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--teal-mid);
+  animation:bounce 1.2s infinite;
+}
+.dots span:nth-child(2){animation-delay:0.2s}
+.dots span:nth-child(3){animation-delay:0.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+
+/* ── DISCLAIMER ── */
+.disclaimer{
+  background:var(--amber-light);
+  border:1px solid #f0d090;
+  border-radius:var(--radius);
+  padding:12px 16px;
+  display:flex;gap:10px;
+  align-items:flex-start;
+  margin-top:1.5rem;
+  font-size:0.8rem;color:#6b4700;line-height:1.5;
+}
+.disclaimer svg{width:16px;height:16px;stroke:#b7651a;fill:none;stroke-width:2;flex-shrink:0;margin-top:1px}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:2rem;
+  font-size:0.8rem;color:var(--ink-faint);
+  border-top:1px solid var(--border);
+  margin-top:3rem;
+  background:var(--white);
+}
+
+/* ── ERROR ── */
+.error-msg{
+  background:var(--red-light);border:1px solid #f5c0bc;
+  border-radius:var(--radius);padding:12px 16px;
+  color:var(--red);font-size:0.88rem;
+  display:none;margin-top:1rem;
+}
+.error-msg.show{display:block}
+
+@media(max-width:600px){
+  .flags-row{grid-template-columns:1fr 1fr}
+  .hero-stats{gap:1.5rem}
+  .test-row{grid-template-columns:1fr auto auto}
+  .confidence-bar{display:none}
+  .patient-banner{flex-direction:column;text-align:center}
+  .report-id-badge{margin:0 auto}
+  .patient-meta{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    </div>
+    <div>
+      <div class="nav-brand">Med<span>Insight</span></div>
+      <div class="nav-tagline">AI-powered report explainer</div>
+    </div>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">
+    <span>AI Powered</span>
+  </div>
+  <h1>Understand your <em>blood report</em><br/>in plain language</h1>
+  <p>Upload your medical PDF and get instant, easy-to-understand explanations of every test result — powered by fine-tuned AI.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>14+</strong><span>Blood tests</span></div>
+    <div class="hero-stat"><strong>90.8%</strong><span>Accuracy</span></div>
+    <div class="hero-stat"><strong>RAG</strong><span>Context-aware</span></div>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- UPLOAD CARD -->
+  <div class="card" id="upload-card">
+    <div class="card-title">Upload your report</div>
+    <div class="card-sub">Supports CBC blood reports in PDF format</div>
+
+    <div class="upload-zone" id="upload-zone">
+      <div class="upload-icon">
+        <svg viewBox="0 0 24 24"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+      </div>
+      <h3>Drop your PDF here</h3>
+      <p>or <span onclick="document.getElementById('file-input').click()">browse files</span></p>
+      <input type="file" id="file-input" accept=".pdf"/>
+    </div>
+
+    <div class="file-selected" id="file-selected">
+      <div class="file-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div class="file-name" id="file-name">report.pdf</div>
+        <div class="file-size" id="file-size">0 KB</div>
+      </div>
+      <button class="remove-file" onclick="removeFile()" title="Remove file">
+        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+
+    <button class="btn btn-primary" id="analyze-btn" disabled onclick="uploadReport()">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Analyse Report
+    </button>
+  </div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    <p>Analysing your report...</p>
+    <div class="steps">
+      <div class="step-item active" id="step-1"><div class="step-dot"></div>Parsing PDF</div>
+      <div class="step-item" id="step-2"><div class="step-dot"></div>Running neural classifier</div>
+      <div class="step-item" id="step-3"><div class="step-dot"></div>Building RAG index</div>
+      <div class="step-item" id="step-4"><div class="step-dot"></div>Generating summary</div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+
+    <div class="patient-banner" id="patient-banner"></div>
+
+    <div class="flags-row" id="flags-row"></div>
+
+    <div class="card">
+      <div class="section-title">Test results</div>
+      <div class="test-grid" id="test-grid"></div>
+    </div>
+
+    <div class="card qa-section">
+      <div class="card-title">Ask about your report</div>
+      <div class="card-sub">Ask anything about your results in plain language</div>
+
+      <div class="suggested-questions" id="suggested-qs"></div>
+
+      <div class="qa-input-row">
+        <input class="qa-input" id="qa-input" type="text" placeholder="e.g. What does my hemoglobin level mean?" onkeydown="if(event.key==='Enter')askQuestion()"/>
+        <button class="btn-ask" id="ask-btn" onclick="askQuestion()">
+          <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Ask
+        </button>
+      </div>
+
+      <div class="qa-messages" id="qa-messages"></div>
+
+      <div class="disclaimer">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>This tool is for educational purposes only. Always consult a qualified medical professional for diagnosis and treatment decisions.</span>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>
+  MedInsight &mdash; Medical Report Explainer &nbsp;·&nbsp; Built with FastAPI, PyTorch &amp; TinyLlama &nbsp;·&nbsp; For educational use only
+</footer>
+
+<script>
+const API = 'http://127.0.0.1:8000/api';
+let currentReportId = null;
+let selectedFile = null;
+
+const zone = document.getElementById('upload-zone');
+const fileInput = document.getElementById('file-input');
+const analyzeBtn = document.getElementById('analyze-btn');
+
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+zone.addEventListener('drop', e => {
+  e.preventDefault(); zone.classList.remove('drag');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type === 'application/pdf') setFile(f);
+  else showError('Please upload a PDF file.');
+});
+zone.addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+
+function setFile(f) {
+  selectedFile = f;
+  document.getElementById('file-name').textContent = f.name;
+  document.getElementById('file-size').textContent = (f.size / 1024).toFixed(1) + ' KB';
+  document.getElementById('file-selected').classList.add('show');
+  analyzeBtn.disabled = false;
+  hideError();
+}
+
+function removeFile() {
+  selectedFile = null;
+  fileInput.value = '';
+  document.getElementById('file-selected').classList.remove('show');
+  analyzeBtn.disabled = true;
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg; el.classList.add('show');
+}
+function hideError() { document.getElementById('error-msg').classList.remove('show'); }
+
+function animateSteps() {
+  const steps = ['step-1','step-2','step-3','step-4'];
+  let i = 0;
+  return setInterval(() => {
+    if (i > 0) { document.getElementById(steps[i-1]).classList.remove('active'); document.getElementById(steps[i-1]).classList.add('done'); }
+    if (i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; }
+  }, 800);
+}
+
+async function uploadReport() {
+  if (!selectedFile) return;
+  hideError();
+  analyzeBtn.disabled = true;
+  document.getElementById('upload-card').style.display = 'none';
+  const loader = document.getElementById('loader');
+  loader.classList.add('show');
+  const timer = animateSteps();
+
+  try {
+    const form = new FormData();
+    form.append('file', selectedFile);
+    const res = await fetch(`${API}/upload`, { method: 'POST', body: form });
+    const data = await res.json();
+    clearInterval(timer);
+    loader.classList.remove('show');
+    if (!res.ok) throw new Error(data.detail || 'Upload failed');
+    currentReportId = data.report_id;
+    renderResults(data);
+  } catch(e) {
+    clearInterval(timer);
+    loader.classList.remove('show');
+    document.getElementById('upload-card').style.display = 'block';
+    analyzeBtn.disabled = false;
+    showError('Error: ' + e.message);
+  }
+}
+
+function renderResults(data) {
+  const results = document.getElementById('results');
+  results.classList.add('show');
+
+  // Patient banner
+  const p = data.patient;
+  const initials = (p.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('');
+  document.getElementById('patient-banner').innerHTML = `
+    <div class="patient-avatar">${initials}</div>
+    <div class="patient-info">
+      <h2>${p.name || 'Patient'}</h2>
+      <div class="patient-meta">
+        ${p.age ? `<span>Age ${p.age}</span>` : ''}
+        ${p.sex ? `<span>${p.sex}</span>` : ''}
+      </div>
+    </div>
+    <div class="report-id-badge">
+      <div class="label">Report ID</div>
+      <div class="value">${data.report_id}</div>
+    </div>`;
+
+  // Flags summary
+  const counts = {Normal:0, Low:0, High:0, Critical:0, Borderline:0};
+  data.summary.forEach(t => counts[t.status] = (counts[t.status]||0) + 1);
+  const abnormal = (counts.High||0) + (counts.Critical||0);
+  document.getElementById('flags-row').innerHTML = `
+    <div class="flag-chip ${abnormal>0?'high':'normal'}">
+      <div class="flag-num">${abnormal}</div>
+      <div class="flag-label">High / Critical</div>
+    </div>
+    <div class="flag-chip low">
+      <div class="flag-num">${counts.Low||0}</div>
+      <div class="flag-label">Low values</div>
+    </div>
+    <div class="flag-chip normal">
+      <div class="flag-num">${counts.Normal||0}</div>
+      <div class="flag-label">Normal</div>
+    </div>`;
+
+  // Test rows
+  const grid = document.getElementById('test-grid');
+  grid.innerHTML = '';
+  data.summary.forEach(t => {
+    const s = (t.status||'Normal').toLowerCase();
+    const badgeClass = `badge-${s}`;
+    const conf = t.confidence || 0;
+    grid.innerHTML += `
+      <div class="test-row status-${s}">
+        <div>
+          <div class="test-name">${t.test}</div>
+          <div class="test-ref">Ref: ${t.reference_range||'—'}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="test-value">${t.value}</div>
+          <div class="test-unit">${t.unit||''}</div>
+        </div>
+        <div>
+          <span class="status-badge ${badgeClass}">${t.status}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:0.75rem;color:var(--ink-faint)">${conf}%</div>
+          <div class="confidence-bar"><div class="confidence-fill" style="width:${conf}%"></div></div>
+        </div>
+      </div>`;
+  });
+
+  // Suggested questions
+  const sqs = [
+    'What does my hemoglobin level mean?',
+    'Is my platelet count concerning?',
+    'What is anemia?',
+    'Should I be worried about my WBC count?',
+    'What does the interpretation say?'
+  ];
+  const sqContainer = document.getElementById('suggested-qs');
+  sqContainer.innerHTML = sqs.map(q =>
+    `<button class="sq-btn" onclick="setQuestion('${q}')">${q}</button>`
+  ).join('');
+}
+
+function setQuestion(q) {
+  document.getElementById('qa-input').value = q;
+  document.getElementById('qa-input').focus();
+}
+
+async function askQuestion() {
+  const input = document.getElementById('qa-input');
+  const q = input.value.trim();
+  if (!q || !currentReportId) return;
+
+  const askBtn = document.getElementById('ask-btn');
+  askBtn.disabled = true;
+  input.value = '';
+
+  const msgs = document.getElementById('qa-messages');
+
+  msgs.innerHTML += `
+    <div class="msg msg-user">
+      <div class="msg-label">You</div>
+      <div class="msg-text">${q}</div>
+    </div>`;
+
+  const thinkId = 'think-' + Date.now();
+  msgs.innerHTML += `
+    <div class="msg msg-thinking" id="${thinkId}">
+      <div class="dots"><span></span><span></span><span></span></div>
+      MedInsight is thinking...
+    </div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+
+  try {
+    const res = await fetch(`${API}/ask/${currentReportId}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({question: q})
+    });
+    const data = await res.json();
+    document.getElementById(thinkId).remove();
+
+    const sourceLabel = data.source === 'report' ? 'From your report' : 'General knowledge';
+    msgs.innerHTML += `
+      <div class="msg msg-ai">
+        <div class="msg-ai-header">
+          <div class="ai-avatar">
+            <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="ai-name">MedInsight AI</div>
+          <span class="source-tag">${sourceLabel}</span>
+        </div>
+        <div class="msg-text">${data.answer || 'No answer returned.'}</div>
+      </div>`;
+  } catch(e) {
+    document.getElementById(thinkId).remove();
+    msgs.innerHTML += `<div class="msg msg-ai"><div class="msg-text" style="color:var(--red)">Error: ${e.message}</div></div>`;
+  }
+
+  msgs.scrollTop = msgs.scrollHeight;
+  askBtn.disabled = false;
+  input.focus();
+}
+</script>
+</body>
+</html>
